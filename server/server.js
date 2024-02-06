@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
 res.send("Hello");
     
-})
+});
 
 app.get("/login", (req, res) => {
     
@@ -101,12 +101,32 @@ app.get("/callback", (req, res) => {
 
 app.get("/toptracks", async (req, res) => {
     
+    spotifyApi.clientCredentialsGrant().
+        then(function (res) {
+            console.log('It worked! Your access token is: ' + res.body.access_token);
+        }).catch(function (err) {
+            console.log('If this is printed, it probably means that you used invalid ' +
+                'clientId and clientSecret values. Please check!');
+            console.log('Hint: ');
+            console.log(err);
+        });
+
     const topTracks = await spotifyApi.getMyTopTracks();
     let tracks = [];
+    let temp;
    for ( let i = 0; i < topTracks.body.items.length; i++){
         tracks.push(topTracks.body.items[i]);
+        temp += `<div><h1>${topTracks.body.items[i].album.name}</h1><p>${topTracks.body.items[i].album.artists[0].name}</p>
+                        <audio class="audioPrev" controls>
+                            <source src="${topTracks.body.items[i].preview_url}" type="audio/mpeg">
+                        </audio><br>
+                        <img src="${topTracks.body.items[i].album.images[1].url}"></img>
+                </div>`;
+       console.log(topTracks.body.items[i].album.images[0].url);
    }
-   res.json(tracks);
+    
+//    res.json(tracks);
+   res.send(`${temp}`);
 });
 
 
