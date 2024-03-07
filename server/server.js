@@ -123,10 +123,11 @@ app.get("/toptracks", async (req, res) => {
                         <img src="${topTracks.body.items[i].album.images[1].url}"></img>
                 </div>`;
        console.log(topTracks.body.items[i].album.images[0].url);
+    //    res.send(topTracks.body.items[i].album.images[0].url).json();
    }
     
-//    res.json(tracks);
-   res.send(`${temp}`);
+   res.json(tracks);
+//    res.send(`${temp}`);
 });
 
 

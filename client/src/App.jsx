@@ -11,18 +11,42 @@ function App() {
       response => response.json()
     ).then(
       data => {
-        setBackendData(data)
+        setBackendData(data);
+        // console.log(data);
       }
+     
     )
   }, []);
   
+  /**
+   * 
+   */
+ let tracks = [];
+
+ backendData.forEach((track, index) => {
+  tracks.push(
+    <div key={index}>
+      <h2>Track: {track.name}</h2>
+      <h4>Album: {track.id}</h4>
+      <a href={track.album.external_urls.spotify} target="new">
+        <img src={track.album.images[0].url} alt=""/>
+      </a>
+      <audio controls>
+        <source  src={track.preview_url}/>
+      </audio>
+    </div>
+  );
+ })
+
+  // console.log(backendData[0].album);
   return (
     <div className='App'>
       <header className='App-header'>
         <Login />
+        {tracks}
       </header>
     </div>
   )
 }
 
-export default App
+export default App;
